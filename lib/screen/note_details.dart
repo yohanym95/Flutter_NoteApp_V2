@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_newproject1/libs/crud.dart';
 import 'package:intl/intl.dart';
 
-
 class NoteDetail extends StatefulWidget {
-   final String appBarTitle;
-   var selectedID;
+  final String appBarTitle;
+  var selectedID;
   //final Note note;
-   NoteDetail( this.selectedID,this.appBarTitle);
+  NoteDetail(this.selectedID, this.appBarTitle);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return NoteDetailState(this.selectedID,this.appBarTitle);
+    return NoteDetailState(this.selectedID, this.appBarTitle);
   }
 }
 
@@ -28,7 +27,7 @@ class NoteDetailState extends State<NoteDetail> {
 
   crudMethods crudObj = new crudMethods();
 
-  NoteDetailState(this.selectedId,this.appBartitle);
+  NoteDetailState(this.selectedId, this.appBartitle);
 
   @override
   Widget build(BuildContext context) {
@@ -119,11 +118,9 @@ class NoteDetailState extends State<NoteDetail> {
                         },
                       ),
                     ),
-
                     Container(
-                          width: 5.0,
-                        ),
-
+                      width: 5.0,
+                    ),
                     Expanded(
                       child: RaisedButton(
                         child: Text('Delete', textScaleFactor: 1.5),
@@ -146,64 +143,61 @@ class NoteDetailState extends State<NoteDetail> {
     );
   }
 
-  void moveToLastScreen(){
-    Navigator.pop(context,true);
+  void moveToLastScreen() {
+    Navigator.pop(context, true);
   }
 
-  void updatePriority(String value){
-    switch(value){
+  void updatePriority(String value) {
+    switch (value) {
       case 'High':
         this.priority = 1;
         break;
-      case 'Low' :
+      case 'Low':
         this.priority = 2;
         break;
       default:
         this.priority = 1;
-        break;    
+        break;
     }
   }
 
-  String getPrirorityAsString(int value){
+  String getPrirorityAsString(int value) {
     String priority1;
-    switch(value){
+    switch (value) {
       case 1:
         priority1 = priprities[0];
         break;
       case 2:
         priority1 = priprities[1];
-        break;  
+        break;
       default:
         priority1 = priprities[0];
-        break;  
+        break;
     }
 
     return priority1;
   }
 
-  void updateTitle(){
+  void updateTitle() {
     this.title = titleController.text;
   }
 
-  void updateDescription(){
+  void updateDescription() {
     this.description = descriptionController.text;
   }
-  void _save() {
 
+  void _save() {
     String date = DateFormat.yMMMd().format(DateTime.now());
-    Map<String,dynamic> noteData = {
+    Map<String, dynamic> noteData = {
       'notePriority': this.priority,
-      'noteTitle':this.title,
-      'noteDescription':this.description,
-      'noteDate':date
+      'noteTitle': this.title,
+      'noteDescription': this.description,
+      'noteDate': date
     };
-    crudObj.addData(noteData).then((result){
+    crudObj.addData(noteData).then((result) {
       debugPrint('added data');
-    }).catchError((e){
+    }).catchError((e) {
       print(e);
     });
-
   }
-
-
 }

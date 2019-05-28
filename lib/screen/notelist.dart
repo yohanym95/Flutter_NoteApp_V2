@@ -78,9 +78,14 @@ class NoteListState extends State<NoteList> {
                         Icons.delete,
                         color: Colors.grey,
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        crudObj.deleteData(snapshot.data.documents[i].documentID);
+                        debugPrint('deleted');
+                      },
                     ),
-                    onTap: () {},
+                    onTap: () {
+
+                    },
                   ),
                 );
               },
@@ -124,5 +129,7 @@ class NoteListState extends State<NoteList> {
   void navigateToDetail(selectedID,String title) async{
    Navigator.push(context, MaterialPageRoute(builder: (context) => NoteDetail(selectedID,title)));
     
-  }
+  } 
+
+  
 }
