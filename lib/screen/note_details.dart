@@ -196,6 +196,8 @@ class NoteDetailState extends State<NoteDetail> {
     };
     crudObj.addData(noteData).then((result) {
       debugPrint('added data');
+      titleController.text = "";
+      descriptionController.text = "";
     }).catchError((e) {
       print(e);
     });

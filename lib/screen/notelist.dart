@@ -35,7 +35,7 @@ class NoteListState extends State<NoteList> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           debugPrint('FAB CLICKED');
-          navigateToDetail(note,'Add Note');
+          navigateToDetail(note, 'Add Note');
         },
         tooltip: 'Add Note',
         child: Icon(Icons.add),
@@ -79,12 +79,16 @@ class NoteListState extends State<NoteList> {
                         color: Colors.grey,
                       ),
                       onTap: () {
-                        crudObj.deleteData(snapshot.data.documents[i].documentID);
+                        crudObj
+                            .deleteData(snapshot.data.documents[i].documentID);
+                          dialogTrigger(
+                              context, 'Delete', 'Your Note is Deleted!');
+                        
                         debugPrint('deleted');
                       },
                     ),
                     onTap: () {
-
+                      navigateToDetail(snapshot.data.documents[i].documentID, 'Update Data');
                     },
                   ),
                 );
@@ -126,10 +130,39 @@ class NoteListState extends State<NoteList> {
     }
   }
 
-  void navigateToDetail(selectedID,String title) async{
-   Navigator.push(context, MaterialPageRoute(builder: (context) => NoteDetail(selectedID,title)));
-    
-  } 
+  void navigateToDetail(selectedID, String title) async {
+    bool result = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => NoteDetail(selectedID, title)));
 
-  
+    if (result == true) {
+      crudObj.getData().then((result) {
+        note = result;
+      });
+    }
+  }
+
+  Future<bool> dialogTrigger(
+      BuildContext context, dialogTitle, dialogDescription) async {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext) {
+          return AlertDialog(
+            title: Text(
+              dialogTitle,
+              style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+            ),
+            content: Text(dialogDescription),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Done'),
+                textColor: Colors.blue,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
 }
