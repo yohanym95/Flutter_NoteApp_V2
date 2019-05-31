@@ -13,6 +13,7 @@ class NoteList extends StatefulWidget {
 class NoteListState extends State<NoteList> {
   var count;
   var note;
+  AsyncSnapshot<dynamic> snapshot;
 
   crudMethods crudObj = new crudMethods();
 
@@ -79,16 +80,50 @@ class NoteListState extends State<NoteList> {
                         color: Colors.grey,
                       ),
                       onTap: () {
-                        crudObj
-                            .deleteData(snapshot.data.documents[i].documentID);
-                          dialogTrigger(
-                              context, 'Delete', 'Your Note is Deleted!');
-                        
+                        // dialogTrigger(context, 'Delete Note', 'Are You Sure?')
+                        //     .whenComplete(() {
+                          
+                        // });
+
+                         showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text(
+                                  'Delete Note',
+                                  style: TextStyle(
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                content: Text('Are You Sure?'),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: Text('No'),
+                                    textColor: Colors.blue,
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+
+                                  FlatButton(
+                                    child: Text('Yes'),
+                                    textColor: Colors.blue,
+                                    onPressed: () {
+                                      crudObj.deleteData(
+                              snapshot.data.documents[i].documentID);
+                                      Navigator.of(context).pop();
+                                    },
+                                  )
+                                ],
+                              );
+                            });
                         debugPrint('deleted');
                       },
                     ),
                     onTap: () {
-                      navigateToDetail(snapshot.data.documents[i].documentID, 'Update Data');
+                      navigateToDetail(
+                          snapshot.data.documents[i].documentID, 'Update Data');
                     },
                   ),
                 );
@@ -122,10 +157,10 @@ class NoteListState extends State<NoteList> {
         return Icon(Icons.play_arrow);
         break;
       case 2:
-        return Icon(Icons.keyboard_arrow_right);
+        return Icon(Icons.play_arrow);
         break;
       default:
-        return Icon(Icons.keyboard_arrow_right);
+        return Icon(Icons.play_arrow);
         break;
     }
   }
@@ -146,7 +181,7 @@ class NoteListState extends State<NoteList> {
     return showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext) {
+        builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
               dialogTitle,
