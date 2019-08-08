@@ -31,6 +31,19 @@ class NoteListState extends State<NoteList> {
     return Scaffold(
       appBar: AppBar(
         title: Text('NOTES'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              setState(() {
+                crudObj.getData().then((result) {
+                  note = result;
+                });
+              });
+              getNoteList();
+            },
+          )
+        ],
       ),
       body: getNoteList(),
       floatingActionButton: FloatingActionButton(
@@ -82,10 +95,9 @@ class NoteListState extends State<NoteList> {
                       onTap: () {
                         // dialogTrigger(context, 'Delete Note', 'Are You Sure?')
                         //     .whenComplete(() {
-                          
-                        // });
 
-                         showDialog(
+                        // });
+                        showDialog(
                             context: context,
                             barrierDismissible: false,
                             builder: (BuildContext context) {
@@ -105,13 +117,12 @@ class NoteListState extends State<NoteList> {
                                       Navigator.of(context).pop();
                                     },
                                   ),
-
                                   FlatButton(
                                     child: Text('Yes'),
                                     textColor: Colors.blue,
                                     onPressed: () {
-                                      crudObj.deleteData(
-                              snapshot.data.documents[i].documentID);
+                                      crudObj.deleteData(snapshot
+                                          .data.documents[i].documentID);
                                       Navigator.of(context).pop();
                                     },
                                   )
@@ -133,6 +144,9 @@ class NoteListState extends State<NoteList> {
         },
       );
     } else {
+      crudObj.getData().then((result) {
+        note = result;
+      });
       return Text('Loading please wait....!');
     }
   }

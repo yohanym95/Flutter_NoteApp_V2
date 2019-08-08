@@ -20,7 +20,7 @@ class crudMethods{
       print(e);
     });
   }
-
+ 
   deleteData(docId){
     Firestore.instance.collection('notepath').document(docId).delete().catchError((e){
       print(e);
